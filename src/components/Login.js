@@ -36,7 +36,7 @@ const Login = () => {
       );
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(res.message);
+        throw new Error(data.error.message);
       } else {
         localStorage.setItem('token',data.idToken)
         email.current.value=''
@@ -88,7 +88,7 @@ const Login = () => {
         <Button variant="primary" type="submit" className="w-100 rounded">
           Login
         </Button>
-        {/* <Link to='/forgot-password'>Forgot Password?</Link> */}
+        <Link to='/reset'>Forgot Password?</Link>
       </Form>
       <p className=" p-2 rounded mx-auto shadow-sm bg-success-subtle border border-1 border-success text-dark">
       Don't have an account? 
