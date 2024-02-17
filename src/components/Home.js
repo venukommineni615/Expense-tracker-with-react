@@ -6,15 +6,21 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
+import { useNavigate } from "react-router-dom";
 const Home = () => {
   const [show, setShow] = useState(true);
   const [loading, setLoading] = useState(false);
   const [verified, setVerified] = useState(false);
+    const navigate=useNavigate()
   const handleClose = () => {
     setShow((prev) => {
       return !prev;
     });
   };
+  const logout=()=>{
+    localStorage.removeItem('token')
+    navigate('/login')
+  }
   const sendVerification = async () => {
     if (verified) {
       return;
@@ -27,8 +33,8 @@ const Home = () => {
           method: "POST",
           body: JSON.stringify({
             requestType: "VERIFY_EMAIL",
-            // idToken: localStorage.getItem("token"),
-            idToken: 'fdknvo',
+            idToken: localStorage.getItem("token"),
+           
           }),
           headers: {
             "Content-Type": "application/json",
@@ -49,7 +55,10 @@ const Home = () => {
   };
   return (
     <>
-      <div className="p-3 fst-italic">welcome to expense tracker!!!</div>
+    <div className="d-flex w-75 p-1">
+      <div className="d-inline-flex p-3 fst-italic">welcome to expense tracker!!!</div>
+      <Button variant="secondary" onClick={logout} className="ms-auto h-25 mt-3 me-5">Log out</Button>
+    </div>
       <ToastContainer
         className="p-3"
         position={"top-end"}
