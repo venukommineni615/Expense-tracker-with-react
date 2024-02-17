@@ -36,15 +36,16 @@ const Login = () => {
       );
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(res.error);
+        throw new Error(res.message);
       } else {
-        localStorage.setItem('token',JSON.stringify(data.idToken))
+        localStorage.setItem('token',data.idToken)
         email.current.value=''
         password.current.value=''
         console.log("You have successfully logged in", data);
         navigate('/')
       }
     } catch (error) {
+      console.log('error',error)
       alert(error);
     }
   };

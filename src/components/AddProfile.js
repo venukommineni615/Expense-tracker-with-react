@@ -1,4 +1,4 @@
-import React, { useInsertionEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -9,15 +9,31 @@ import { Link } from "react-router-dom";
 const AddProfile = () => {
     const displayName=useRef('')
     const photoUrl=useRef('')
+    useEffect(()=>{
+        const getUser=async()=>{
+           
+            const res=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBIXYEexOHeexcl7872yMM70nR1j7HYnhM',{
+                method:'POST',
+                body:JSON.stringify({
+                    idToken:localStorage.getItem('token')
+                })
+            })
+            const data=await res.json()
+            displayName.current.value=data.users[0].displayName
+        photoUrl.current.value=data.users[0].photoUrl
+            
+        }
+        getUser()
+    },[])
     const updateProfile=async(event)=>{
         event.preventDefault()
-        try{const res=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=[API_KEY]`,{
+        // console.log(displayName.current.value,localStorage.getItem('token'))
+        try{const res=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyBIXYEexOHeexcl7872yMM70nR1j7HYnhM`,{
             method:'POST',
             body:JSON.stringify({
                 idToken:localStorage.getItem('token'),
                 displayName:displayName.current.value,
                 photoUrl:photoUrl.current.value,
-                deleteAttribute:['deleteProfile'],
                 returnSecureToken:true,
 
             }),
@@ -25,10 +41,13 @@ const AddProfile = () => {
                 'Content-Type':'application/json'
             }
         })
+        console.log('res inside update',res)
         if(!res.ok){
             throw new Error('something is wrong on client side')
         }
         const data=await res.json()
+        displayName.current.value=''
+        photoUrl.current.value=''
         console.log('data from profile',data)}catch(error){
             console.log('error',error)
         }
@@ -53,10 +72,10 @@ const AddProfile = () => {
       </Row>
       <Row className="mb-4">
         <Col>
-          <Form.Control ref={displayName} placeholder="Full name" />
+          <Form.Control ref={displayName} placeholder="Full name" required/>
         </Col>
         <Col>
-          <Form.Control ref={photoUrl} placeholder=" Profile Photo URL" type="url"/>
+          <Form.Control ref={photoUrl} placeholder=" Profile Photo URL" type="url" required/>
         </Col>
       </Row>
       <Row className="mb-4" >
