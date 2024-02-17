@@ -7,8 +7,10 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate=useNavigate()
   const email = useRef("");
   const password = useRef("");
   const [showPassword, setShowPassword] = useState(false);
@@ -36,9 +38,11 @@ const Login = () => {
       if (!res.ok) {
         throw new Error(res.error);
       } else {
+        localStorage.setItem('token',JSON.stringify(data.idToken))
         email.current.value=''
         password.current.value=''
         console.log("You have successfully logged in", data);
+        navigate('/')
       }
     } catch (error) {
       alert(error);
@@ -85,9 +89,12 @@ const Login = () => {
         </Button>
         {/* <Link to='/forgot-password'>Forgot Password?</Link> */}
       </Form>
-      <Button className="mx-auto shadow-sm bg-success-subtle border-1 border-success text-dark">
-        Don't have an account? Sign up
-      </Button>
+      <p className=" p-2 rounded mx-auto shadow-sm bg-success-subtle border border-1 border-success text-dark">
+      Don't have an account? 
+      <Link to={'/signup'} >
+        Sign up
+      </Link>
+      </p>
     </div>
   );
 };
