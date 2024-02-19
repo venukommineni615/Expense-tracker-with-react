@@ -2,6 +2,7 @@ import React, { useContext, useRef, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { ExpenseContext } from "../Store/ExpenseContext";
 import ExpenseList from "./ExpenseList";
+import {postFetch} from "../utils/postFetch";
 
 const AddExpense = () => {
     const [show,setShow]=useState(false)
@@ -22,6 +23,7 @@ const AddExpense = () => {
             category:category.current.value
         }
         console.log(item)
+        postFetch('https://contact-7d1c8-default-rtdb.firebaseio.com/expenses',JSON.stringify(item))
         expenseCtx.addExpense(item)
         expense.current.value=''
         description.current.value=''

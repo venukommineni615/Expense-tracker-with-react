@@ -2,7 +2,10 @@ import React, { useContext } from 'react'
 import Expense from './Expense'
 import ListGroup from 'react-bootstrap/ListGroup';
 import { ExpenseContext } from '../Store/ExpenseContext';
+import { useGetFetch } from '../custom-hooks/useFetch';
 const ExpenseList = () => {
+    const {data}=useGetFetch('https://contact-7d1c8-default-rtdb.firebaseio.com/expenses')
+    console.log('data',data)
     const expenseCtx=useContext(ExpenseContext)
 
   return (
