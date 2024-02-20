@@ -1,8 +1,28 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import ListGroup from 'react-bootstrap/ListGroup';
-import { Badge } from 'react-bootstrap';
+import { Badge, Button } from 'react-bootstrap';
+import { ExpenseContext } from '../Store/ExpenseContext';
 const Expense = (props) => {
-    const {category,description,expense}=props.item
+    const expenseCtx=useContext(ExpenseContext)
+    const {category,description,expense,id}=props.item
+    const editExpense=()=>{
+        props.show()
+        props.id(id)
+        props.expense(expense)
+        props.description(description)
+        props.category(category)
+    }
+    const deleteExpense=async()=>{
+        const res=await fetch(`https://contact-7d1c8-default-rtdb.firebaseio.com/expenses/${id}.json`,
+        {method:'DELETE'})
+        
+        if(!res.ok){
+            console.log('error',res)
+        }else{
+            expenseCtx.deleteExpense(id)
+            console.log('Expense successfully deleted',res)
+        }
+    }
   return (
     <ListGroup.Item
         as="li"
@@ -12,8 +32,10 @@ const Expense = (props) => {
           {description}
         </div>
         <Badge bg="primary" pill>
-          {expense}
+          $ {expense}
         </Badge>
+        <Button variant='primary' onClick={editExpense}>Edit expense</Button>
+        <Button variant='primary' onClick={deleteExpense}>Delete expense</Button>
       </ListGroup.Item>
   )
 }
