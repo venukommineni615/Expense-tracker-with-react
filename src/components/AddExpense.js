@@ -1,12 +1,15 @@
-import React, { useContext, useRef, useState } from "react";
+import React, {useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { ExpenseContext } from "../Store/ExpenseContext";
 import ExpenseList from "./ExpenseList";
 import {postFetch} from "../utils/postFetch";
-
+import { useDispatch, useSelector } from "react-redux";
+import { expenseActions } from "../Store/ExpenseReducer";
 const AddExpense = () => {
+    const dispatch=useDispatch()
+    const expenses=useSelector((state)=>{
+        return state.expense.items
+    })
     const [show,setShow]=useState(false)
-    const expenseCtx=useContext(ExpenseContext)
     const [expense,setExpense]=useState('')
     const [description,setDescription]=useState('')
     const [category,setCategory]=useState('')
@@ -33,21 +36,20 @@ const AddExpense = () => {
         }
         let url='https://contact-7d1c8-default-rtdb.firebaseio.com/expenses.json'
         let method="POST"
-        const existed=expenseCtx.items.find((item)=>{
+        const existed=expenses.find((item)=>{
             return item.id===id
         })
-        console.log('existed',existed,'id',id)
         if(existed){
             url=`https://contact-7d1c8-default-rtdb.firebaseio.com/expenses/${id}.json`
             method='PUT'
         }
         const res=await postFetch(url,JSON.stringify(item),method)
         if(id){
-            expenseCtx.editExpense(id,item)
+            dispatch(expenseActions.updateExpense({id,item}))
         }
         else{
             setId(res.name)
-            expenseCtx.addExpense({...item, id:res.name})
+            dispatch(expenseActions.addExpense({...item,id:res.name}))
         }
         setExpense('')
         setDescription('')

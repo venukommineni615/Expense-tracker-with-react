@@ -23,11 +23,12 @@ const AddProfile = () => {
         photoUrl.current.value=data.users[0].photoUrl
             
         }
-        getUser()
+        if(localStorage.getItem('token')){
+            getUser()
+        }
     },[])
     const updateProfile=async(event)=>{
         event.preventDefault()
-        // console.log(displayName.current.value,localStorage.getItem('token'))
         try{const res=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyBIXYEexOHeexcl7872yMM70nR1j7HYnhM`,{
             method:'POST',
             body:JSON.stringify({
@@ -43,6 +44,7 @@ const AddProfile = () => {
         })
         console.log('res inside update',res)
         if(!res.ok){
+           
             throw new Error('something is wrong on client side')
         }
         const data=await res.json()

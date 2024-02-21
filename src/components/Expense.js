@@ -1,9 +1,13 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Badge, Button } from 'react-bootstrap';
-import { ExpenseContext } from '../Store/ExpenseContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { expenseActions } from '../Store/ExpenseReducer';
 const Expense = (props) => {
-    const expenseCtx=useContext(ExpenseContext)
+    const dispatch=useDispatch()
+    const expenses=useSelector((state)=>{
+        return state.expense.items
+    })
     const {category,description,expense,id}=props.item
     const editExpense=()=>{
         props.show()
@@ -19,7 +23,7 @@ const Expense = (props) => {
         if(!res.ok){
             console.log('error',res)
         }else{
-            expenseCtx.deleteExpense(id)
+            dispatch(expenseActions.deleteExpense(id))
             console.log('Expense successfully deleted',res)
         }
     }

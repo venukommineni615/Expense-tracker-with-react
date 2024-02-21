@@ -18,9 +18,9 @@ const router=createBrowserRouter([
 ])
 function App() {
   return (
-  <ExpenseProvider>
+  
     <RouterProvider router={router}></RouterProvider>
-  </ExpenseProvider>
+ 
   
   );
 }
