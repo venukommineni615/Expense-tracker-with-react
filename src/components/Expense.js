@@ -1,13 +1,10 @@
 import React from 'react'
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Badge, Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { expenseActions } from '../Store/ExpenseReducer';
 const Expense = (props) => {
     const dispatch=useDispatch()
-    const expenses=useSelector((state)=>{
-        return state.expense.items
-    })
     const {category,description,expense,id}=props.item
     const editExpense=()=>{
         props.show()
@@ -23,7 +20,7 @@ const Expense = (props) => {
         if(!res.ok){
             console.log('error',res)
         }else{
-            dispatch(expenseActions.deleteExpense(id))
+            dispatch(expenseActions.deleteExpense({id,expense}))
             console.log('Expense successfully deleted',res)
         }
     }
@@ -35,11 +32,11 @@ const Expense = (props) => {
           <div className="fw-bold">{category}</div>
           {description}
         </div>
-        <Badge bg="primary" pill>
+        <Badge bg="primary mt-2 p-2" pill>
           $ {expense}
         </Badge>
-        <Button variant='primary' onClick={editExpense}>Edit expense</Button>
-        <Button variant='primary' onClick={deleteExpense}>Delete expense</Button>
+        <Button  variant='primary mx-2 ' onClick={editExpense}>Edit</Button>
+        <Button variant='primary mx-2 ' onClick={deleteExpense}>Delete </Button>
       </ListGroup.Item>
   )
 }

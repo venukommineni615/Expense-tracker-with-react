@@ -6,21 +6,22 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
-import { useNavigate } from "react-router-dom";
+
+import { useSelector } from "react-redux";
 const Home = () => {
+    const theme=useSelector((state)=>{
+        return state.theme.theme
+    })
+    
   const [show, setShow] = useState(true);
   const [loading, setLoading] = useState(false);
   const [verified, setVerified] = useState(false);
-    const navigate=useNavigate()
   const handleClose = () => {
     setShow((prev) => {
       return !prev;
     });
   };
-  const logout=()=>{
-    localStorage.removeItem('token')
-    navigate('/login')
-  }
+  
   const sendVerification = async () => {
     if (verified) {
       return;
@@ -34,7 +35,6 @@ const Home = () => {
           body: JSON.stringify({
             requestType: "VERIFY_EMAIL",
             idToken: localStorage.getItem("token"),
-           
           }),
           headers: {
             "Content-Type": "application/json",
@@ -46,6 +46,7 @@ const Home = () => {
         throw new Error(data.error.message);
       } else {
         const data = await res.json();
+        console.log('data',data)
         setVerified(true);
       }
     } catch (error) {
@@ -57,12 +58,13 @@ const Home = () => {
     <>
     <div className="d-flex w-75 p-1">
       <div className="d-inline-flex p-3 fst-italic">welcome to expense tracker!!!</div>
-      <Button variant="secondary" onClick={logout} className="ms-auto h-25 mt-3 me-5">Log out</Button>
+      
     </div>
       <ToastContainer
-        className="p-3"
-        position={"top-end"}
-        style={{ zIndex: 1 }}
+        className="p-3 "
+        position={"middle-end"}
+        bg={theme}
+        
       >
         <Toast>
           <Toast.Body className="fst-italic">

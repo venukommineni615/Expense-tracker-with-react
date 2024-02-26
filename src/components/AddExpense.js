@@ -9,6 +9,13 @@ const AddExpense = () => {
     const expenses=useSelector((state)=>{
         return state.expense.items
     })
+    const theme=useSelector((state)=>{
+        return state.theme.theme
+    })
+    const color=useSelector((state)=>{
+        return state.theme.color
+    })
+    
     const [show,setShow]=useState(false)
     const [expense,setExpense]=useState('')
     const [description,setDescription]=useState('')
@@ -57,8 +64,8 @@ const AddExpense = () => {
 
     }
   return (
-    <>
-    {show && <Form onSubmit={addExpense} className="w-50 mx-auto bg-primary-subtle mt-5 shadow p-4 rounded">
+    <div className={`bg-${theme} text-${color} py-4`}>
+    {show && <Form onSubmit={addExpense} className={`w-50 mx-auto bg-primary-subtle mt-5 shadow p-4 rounded`}>
       <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
         <Form.Label>Expense</Form.Label>
         <Form.Control value={expense} onChange={changeExpense} type="number" placeholder='$' min={10} required/>
@@ -81,7 +88,7 @@ const AddExpense = () => {
     </Form>}
     {!show && <div className="text-center p-2"><Button onClick={()=>{setShow(true)}} className="bg-primary-subtle p-3 rounded text-dark fw-semibold">Add Expense</Button></div>}
     <ExpenseList expense={(val)=>{setExpense(val)}} description={(val)=>{setDescription(val)}} category={(val)=>{setCategory(val)}} show={()=>{setShow(true)}} id={(val)=>{setId(val)}}></ExpenseList>
-    </>
+    </div>
   );
 };
 
