@@ -6,17 +6,23 @@ import store from '../Store';
 
 describe('Expense component', () => {
   test('renders Edit button', () => {
-    
-    
-    render(<Provider store={store}><Expense item={{ category: 'Category', description: 'Description', expense: 100, id: 1 }} /></Provider>);
+    render(
+      <Provider store={store}>
+        <Expense item={{ category: 'wait what', description: 'Description', expense: 100, id: 1 }} />
+      </Provider>
+    );
     const editButton = screen.getByText('Edit');
     expect(editButton).toBeInTheDocument();
-
-    
   });
-  test(' renders Delete button',()=>{
-    render(<Provider store={store}><Expense item={{ category: 'Category', description: 'Description', expense: 100, id: 1 }} /></Provider>);
-    const editButton = screen.getByText('Delete');
-    expect(editButton).toBeInTheDocument();
-  })
+
+  test('renders Delete button', () => {
+    render(
+      <Provider store={store}>
+        <Expense item={{ category: 'Category', description: 'Description', expense: 100, id: 1 }} />
+      </Provider>
+    );
+    const deleteButton = screen.getByText('Delete');
+    expect(deleteButton).toBeInTheDocument();
+  });
+
 });

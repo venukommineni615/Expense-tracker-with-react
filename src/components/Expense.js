@@ -36,7 +36,7 @@ const Expense = (props) => {
           $ {expense}
         </Badge>
         <Button  variant='primary mx-2 ' onClick={editExpense}>Edit</Button>
-        <Button variant='primary mx-2 ' onClick={deleteExpense}>Delete </Button>
+        <Button variant='primary mx-2 ' onClick={deleteExpense}>Delete</Button>
       </ListGroup.Item>
   )
 }
