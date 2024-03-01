@@ -13,7 +13,7 @@ const Expense = (props) => {
         props.description(description)
         props.category(category)
     }
-    const deleteExpense=async()=>{
+    const deleteTheExpense=async()=>{
         const res=await fetch(`https://contact-7d1c8-default-rtdb.firebaseio.com/expenses/${id}.json`,
         {method:'DELETE'})
         
@@ -36,7 +36,7 @@ const Expense = (props) => {
           $ {expense}
         </Badge>
         <Button  variant='primary mx-2 ' onClick={editExpense}>Edit</Button>
-        <Button variant='primary mx-2 ' onClick={deleteExpense}>Delete</Button>
+        <Button variant='primary mx-2 ' onClick={deleteTheExpense}>Delete</Button>
       </ListGroup.Item>
   )
 }
